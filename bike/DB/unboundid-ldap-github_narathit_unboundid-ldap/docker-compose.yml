@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  unboundidLdap:
+    image: unboundid-ldap:latest
+    hostname: unboundid-ldap
+    ports:
+      - "389:389"
+    environment:
+      - baseDN=dc=pluralsight,dc=com
+      - additionalBindDN=cn=Manager,dc=pluralsight,dc=com
+      - additionalBindPassword=plus321
+      - port=389
+      - LDAP_PROPS_FILE=./conf/ldap.properties
+      - LDAP_LDIF_FILE=./conf/ldap.ldif

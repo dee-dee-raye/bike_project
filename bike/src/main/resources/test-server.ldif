@@ -1,0 +1,61 @@
+dn: dc=pluralsight,dc=com
+objectclass: top
+objectclass: domain
+objectclass: extensibleObject
+dc: pluralsight
+
+dn: ou=groups,dc=pluralsight,dc=com
+objectclass: top
+objectclass: organizationalUnit
+ou: groups
+
+dn: ou=subgroups,ou=groups,dc=pluralsight,dc=com
+objectclass: top
+objectclass: organizationalUnit
+ou: subgroups
+
+dn: ou=people,dc=pluralsight,dc=com
+objectclass: top
+objectclass: organizationalUnit
+ou: people
+
+dn: uid=dee,ou=people,dc=pluralsight,dc=com
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Dee McCroskey
+sn: McCroskey
+uid: dee
+userPassword: $2a$10$GFAZVA7yRjKrTWwvfwphnu8Va1S2WGGESnCr2OdxRdJeYi75SWFiK
+
+dn: uid=raye,ou=people,dc=pluralsight,dc=com
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Raye McCroskey
+sn: McCroskey
+uid: raye
+userPassword: $2a$10$GFAZVA7yRjKrTWwvfwphnu8Va1S2WGGESnCr2OdxRdJeYi75SWFiK
+
+dn: cn=developers,ou=groups,dc=pluralsight,dc=com
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: developers
+ou: developer
+uniqueMember: uid=dee,uid=raye,ou=people,dc=pluralsight,dc=com
+
+dn: cn=managers,ou=groups,dc=pluralsight,dc=com
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: managers
+ou: manager
+uniqueMember: uid=dee,uid=raye,ou=people,dc=pluralsight,dc=com
+
+dn: cn=submanagers,ou=subgroups,ou=groups,dc=pluralsight,dc=com
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: submanagers
+ou: submanager
+uniqueMember: uid=dee,uid=raye,ou=people,dc=pluralsight,dc=com

@@ -1,0 +1,85 @@
+# Pretty much copied from https://github.com/khezen/compose-postgres
+---
+services:
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      PGDATA: /data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - postgres
+
+#  ldap:
+#    container_name: ldap_container
+#    image: osixia/openldap
+#    ports:
+#      - "389:389"
+#      - "636:636"
+#    volumes:
+#      - ./ldap/certificates:/container/service/slapd/assets/certs
+#      - ./ldap/slapd/database:/var/lib/ldap
+#      - ./ldap/slapd/config:/etc/ldap/slapd.d
+#    environment:
+#      - LDAP_ORGANISATION=globomatics
+#      - LDAP_DOMAIN=globomatics.com
+#      - LDAP_ADMIN_USERNAME=admin
+#      - LDAP_ADMIN_PASSWORD=pass
+#      - LDAP_CONFIG_PASSWORD=pass
+#      - "LDAP_BASE_DN=dc=globomatics,dc=com"
+#      - LDAP_TLS_CRT_FILENAME=server.crt
+#      - LDAP_TLS_KEY_FILENAME=server.key
+#      - LDAP_TLS_CA_CRT_FILENAME=globomatics.com.ca.crt
+#      - LDAP_READONLY_USER=true
+#      - LDAP_READONLY_USER_USERNAME=user-ro
+#      - LDAP_READONLY_USER_PASSWORD=ro_pass
+#    networks:
+#      - ldap
+#
+#  phpLDAPadmin:
+#    container_name: php_ldap_admin_container
+#    image: osixia/phpldapadmin
+#    ports:
+#      - "80:80"
+#    environment:
+#      - PHPLDAPADMIN_LDAP_HOSTS=ldap_container
+#      - PHPLDAPADMIN_HTTPS=false
+#    depends_on:
+#      - ldap
+#    networks:
+#      - ldap
+
+  unboundidLdap:
+    image: unboundid-ldap:latest
+    hostname: unboundid-ldap
+    ports:
+      - "389:389"
+    environment:
+      - baseDN=dc=pluralsight,dc=com
+      - additionalBindDN=cn=Manager,dc=pluralsight,dc=com
+      - additionalBindPassword=plus321
+      - port=389
+      - LDAP_PROPS_FILE=./conf/ldap.properties
+      - LDAP_LDIF_FILE=./conf/ldap.ldif
+
+
+
+networks:
+  postgres:
+    driver: bridge
+  ldap:
+    driver: bridge
